@@ -15,6 +15,7 @@ import ArtworkCard from '@/components/ArtworkCard'
 
 function Favourites(){
     const [favourites, setFavourites] = useAtom(favouritesAtom)
+    if (!favourites) return null;
     if (favourites){
         return(
             <Row className="gy-4" >

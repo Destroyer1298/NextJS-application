@@ -14,18 +14,27 @@ import {Card, Button} from 'react-bootstrap'
 import {useAtom} from 'jotai'
 import {favouritesAtom} from '@/store'
 import {useState} from 'react'
+import { addToFavourites, removeFromFavourites } from '@/lib/userData';
+import { useEffect } from 'react'
+
+
 
 function ArtworkCardDetail({ objectID }) {
     const {data, error} = SWR(objectID ? `https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}` : null)
     const [favouritesList, setFavouritesList] = useAtom(favouritesAtom)
-    const [showAdded, setShowAdded] = useState(favouritesList?.includes(objectID) ? true : false)
-    const favouritesClicked = () => {
-        if(showAdded){
-            setFavouritesList(current => current.filter(fav => fav != objectID))
+    const [showAdded, setShowAdded] = useState(false)
+
+    useEffect(()=>{
+        setShowAdded(favouritesList?.includes(objectID))
+        }, [favouritesList])
+    
+    async function favouritesClicked(){
+        if (showAdded==true) {
+            setFavouritesList(await removeFromFavourites(objectID))
             setShowAdded(false)
         }
         else{
-            setFavouritesList(current => [...current, objectID]);
+            setFavouritesList(await addToFavourites(objectID))
             setShowAdded(true)
         }
     }

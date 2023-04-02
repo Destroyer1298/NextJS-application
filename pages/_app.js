@@ -13,10 +13,12 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Layout from '../components/Layout'
 import { SWRConfig } from 'swr'
 import { SSRProvider } from 'react-bootstrap';
+import RouteGuard from '@/components/RouteGuard'
 
 function MyApp({ Component, pageProps }) {
   return (
     <>
+    <RouteGuard>
     <SSRProvider>
     <Layout>
       <SWRConfig value={{
@@ -38,6 +40,7 @@ function MyApp({ Component, pageProps }) {
       </SWRConfig>
       </Layout>
     </SSRProvider>
+    </RouteGuard>
     </>
   );
 }
